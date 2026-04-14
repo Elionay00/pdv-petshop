@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Banco de dados
+dados/*.db
+dados/*.sqlite
+dados/*.sqlite3
+
+# Arquivos de configuração (mantém a estrutura)
+dados/config.json
+
+# Ambientes virtuais
+venv/
+env/
+ENV/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
