@@ -4,9 +4,9 @@ Arquivo principal
 """
 
 import customtkinter as ctk
-import config
-import banco
-from constantes import LARGURA_JANELA, ALTURA_JANELA
+from core import config
+from database import banco
+from core.constantes import LARGURA_JANELA, ALTURA_JANELA
 
 class App:
     def __init__(self):

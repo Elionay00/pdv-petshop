@@ -3,7 +3,7 @@ Tela Principal
 """
 
 import customtkinter as ctk
-from constantes import COR_PRIMARIA, COR_SECUNDARIA, COR_PERIGO, COR_VOLTAR, BOTAO_LARGO, BOTAO_ALTO, FONTE_BOTAO
+from core.constantes import COR_PRIMARIA, COR_SECUNDARIA, COR_PERIGO, BOTAO_LARGO, BOTAO_ALTO, FONTE_BOTAO
 
 class TelaPrincipal(ctk.CTkFrame):
     def __init__(self, parent, mudar_tela_callback):
