@@ -1,87 +1,100 @@
 """
-Tela Principal
+Tela Principal - PDV Pet Shop
+Responsável: Gabrielly
 """
 
 import customtkinter as ctk
-from core.constantes import COR_PRIMARIA, COR_SECUNDARIA, COR_PERIGO, BOTAO_LARGO, BOTAO_ALTO, FONTE_BOTAO
+from core.constantes import *
 
 class TelaPrincipal(ctk.CTkFrame):
     def __init__(self, parent, mudar_tela_callback):
         super().__init__(parent)
         self.mudar_tela = mudar_tela_callback
         
-        # Configurar grid
+        # Configuração de layout centralizado
         self.grid_columnconfigure(0, weight=1)
-        self.grid_rowconfigure([0,1,2,3,4,5], weight=1)
         
-        # Título
-        titulo = ctk.CTkLabel(
+        # --- Título ---
+        self.titulo = ctk.CTkLabel(
             self, 
             text="🐾 PDV PET SHOP 🐾",
-            font=ctk.CTkFont(size=40, weight="bold")
+            font=FONTE_TITULO,
+            text_color=COR_PRIMARIA
         )
-        titulo.grid(row=0, column=0, pady=40)
+        self.titulo.pack(pady=(50, 30)) # Espaçamento maior no topo
         
-        # Botão Cadastrar
-        btn_cadastrar = ctk.CTkButton(
-            self,
-            text="🐶 CADASTRAR PRODUTO",
+        # --- Container para os Botões (Organização) ---
+        self.container_botoes = ctk.CTkFrame(self, fg_color="transparent")
+        self.container_botoes.pack(expand=True, fill="both")
+
+        # 1. Botão CADASTRAR (Verde)
+        self.btn_cadastrar = ctk.CTkButton(
+            self.container_botoes, 
+            text="CADASTRAR",
+            width=BOTAO_LARGO, 
+            height=BOTAO_ALTO, 
             font=FONTE_BOTAO,
-            height=BOTAO_ALTO,
-            width=BOTAO_LARGO,
-            command=self.abrir_cadastro,
-            fg_color=COR_PRIMARIA
+            fg_color=COR_PRIMARIA, 
+            hover_color="#219150",
+            command=lambda: self.mudar_tela("cadastro")
         )
-        btn_cadastrar.grid(row=1, column=0, pady=15)
-        
-        # Botão Consultar
-        btn_consultar = ctk.CTkButton(
-            self,
-            text="🔍 CONSULTAR PRODUTOS",
+        self.btn_cadastrar.pack(pady=10)
+
+        # 2. Botão CONSULTAR (Azul)
+        self.btn_consultar = ctk.CTkButton(
+            self.container_botoes, 
+            text="CONSULTAR",
+            width=BOTAO_LARGO, 
+            height=BOTAO_ALTO, 
             font=FONTE_BOTAO,
-            height=BOTAO_ALTO,
-            width=BOTAO_LARGO,
-            command=self.abrir_consulta,
-            fg_color=COR_SECUNDARIA
+            fg_color=COR_SECUNDARIA, 
+            hover_color="#2471a3", # Azul mais escuro no hover
+            command=lambda: self.mudar_tela("consulta")
         )
-        btn_consultar.grid(row=2, column=0, pady=15)
-        
-        # Botão Sair
-        btn_sair = ctk.CTkButton(
-            self,
-            text="🚪 SAIR",
+        self.btn_consultar.pack(pady=10)
+
+        # 3. Botão VENDER (Laranja)
+        self.btn_vender = ctk.CTkButton(
+            self.container_botoes, 
+            text="VENDER",
+            width=BOTAO_LARGO, 
+            height=BOTAO_ALTO, 
             font=FONTE_BOTAO,
-            height=BOTAO_ALTO,
-            width=BOTAO_LARGO,
-            command=self.sair,
-            fg_color=COR_PERIGO
+            fg_color=COR_TERCIARIA, 
+            hover_color="#a04000", # Laranja mais escuro no hover
+            command=lambda: self.mudar_tela("venda")
         )
-        btn_sair.grid(row=4, column=0, pady=15)
-        
-        # Label informativa
-        lbl_info = ctk.CTkLabel(
-            self,
-            text=" Versão temporária",
-            font=ctk.CTkFont(size=16),
-            text_color="orange"
+        self.btn_vender.pack(pady=10)
+
+        # 4. Botão ALTERAR TEMA (Cinza/Dark)
+        self.btn_tema = ctk.CTkButton(
+            self.container_botoes, 
+            text="ALTERAR TEMA",
+            width=BOTAO_LARGO, 
+            height=BOTAO_ALTO, 
+            font=FONTE_BOTAO,
+            fg_color=COR_VOLTAR, 
+            hover_color="#566573",
+            command=self.alternar_tema
         )
-        lbl_info.grid(row=5, column=0, pady=30)
-    
-    def abrir_cadastro(self):
-        try:
-            from telas.tela_cadastro import TelaCadastro
-            self.mudar_tela(TelaCadastro)
-        except ImportError:
-            from tkinter import messagebox
-            messagebox.showinfo("Aviso", "Tela de cadastro será implementada")
-    
-    def abrir_consulta(self):
-        try:
-            from telas.tela_consulta import TelaConsulta
-            self.mudar_tela(TelaConsulta)
-        except ImportError:
-            from tkinter import messagebox
-            messagebox.showinfo("Aviso", "Tela de consulta será implementada")
-    
-    def sair(self):
-        self.master.master.destroy()
+        self.btn_tema.pack(pady=10)
+
+        # 5. Botão SAIR (Vermelho)
+        self.btn_sair = ctk.CTkButton(
+            self.container_botoes, 
+            text="SAIR",
+            width=BOTAO_LARGO, 
+            height=BOTAO_ALTO, 
+            font=FONTE_BOTAO,
+            fg_color=COR_PERIGO, 
+            hover_color="#943126",
+            command=self.quit
+        )
+        self.btn_sair.pack(pady=(10, 40))
+
+    def alternar_tema(self):
+        """Troca entre modo claro e escuro"""
+        if ctk.get_appearance_mode() == "Dark":
+            ctk.set_appearance_mode("Light")
+        else:
+            ctk.set_appearance_mode("Dark")
