@@ -2,16 +2,16 @@ import sqlite3
 
 DB_NAME = "petshop.db"
 
-    # Conexão
+# Conexão
 def conectar():
     try:
         conn = sqlite3.connect(DB_NAME)
         return conn
     except sqlite3.Error as e:
         print(f"Erro ao conectar ao banco de dados: {e}")
-##########
 
-    # Criar a tabela
+
+# Criar a tabela
 def criar_tabelas():
     try:
         conn = conectar()
@@ -32,10 +32,9 @@ def criar_tabelas():
 
     except sqlite3.Error as e:
         print(f"Erro ao criar tabelas: {e}")
-#######
 
 
-        # Inserir produtos
+# Inserir produtos
 def inserir_produto(nome, categoria, preco, qtd, descricao):
     try:
         conn = conectar()
@@ -52,10 +51,9 @@ def inserir_produto(nome, categoria, preco, qtd, descricao):
 
     except sqlite3.Error as e:
         print(f"Erro ao inserir produto: {e}")
-#########
 
 
-        # Listar produtos
+# Listar produtos
 def listar_produtos():
     try:
         conn = conectar()
@@ -70,10 +68,9 @@ def listar_produtos():
     except sqlite3.Error as e:
         print(f"Erro ao listar produtos: {e}")
         return []
-#########
 
 
-        # Buscar produto
+# Buscar produto
 def buscar_produto(termo):
     try:
         conn = conectar()
@@ -91,17 +88,16 @@ def buscar_produto(termo):
     except sqlite3.Error as e:
         print(f"Erro ao buscar produto: {e}")
         return []
-##########
 
 
-        # Obter produto por ID
+# Obter produto por ID
 def obter_produto_por_id(produto_id):
     try:
         conn = conectar()
         cursor = conn.cursor()
 
         cursor.execute(
-    "SELECT * FROM produtos WHERE id = ?", (produto_id,))
+            "SELECT * FROM produtos WHERE id = ?", (produto_id,))
 
         produto = cursor.fetchone()
         conn.close()
@@ -110,17 +106,16 @@ def obter_produto_por_id(produto_id):
     except sqlite3.Error as e:
         print(f"Erro ao obter produto por ID: {e}")
         return None
-###########
 
 
-        # Filtrar produtos por categoria
+# Filtrar produtos por categoria
 def filtrar_por_categoria(categoria):
     try:
         conn = conectar()
         cursor = conn.cursor()
 
         cursor.execute(
-    "SELECT * FROM produtos WHERE categoria = ?",
+            "SELECT * FROM produtos WHERE categoria = ?",
             (categoria,))
 
         produtos = cursor.fetchall()
@@ -130,10 +125,9 @@ def filtrar_por_categoria(categoria):
     except sqlite3.Error as e:
         print(f"Erro ao filtrar por categoria: {e}")
         return []
-############
 
 
-        # Deletar produto
+# Deletar produto
 def deletar_produto(produto_id):
     try:
         conn = conectar()
@@ -147,10 +141,9 @@ def deletar_produto(produto_id):
 
     except sqlite3.Error as e:
         print(f"Erro ao deletar produto: {e}")
-############
 
 
-        # Atualizar produto
+# Atualizar produto
 def atualizar_produto(produto_id, nome, categoria, preco, qtd, descricao):
     try:
         conn = conectar()
@@ -167,3 +160,23 @@ def atualizar_produto(produto_id, nome, categoria, preco, qtd, descricao):
 
     except sqlite3.Error as e:
         print(f"Erro ao atualizar produto: {e}")
+
+
+# Atualizar estoque
+def atualizar_estoque(produto_id, nova_qtd):
+    """Atualiza a quantidade em estoque de um produto"""
+    try:
+        conn = conectar()
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            UPDATE produtos
+            SET qtd = ?
+            WHERE id = ?
+        """, (nova_qtd, produto_id))
+
+        conn.commit()
+        conn.close()
+
+    except sqlite3.Error as e:
+        print(f"Erro ao atualizar estoque: {e}")

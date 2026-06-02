@@ -7,7 +7,6 @@ from tkinter import messagebox
 import banco
 from constantes import *
 
-
 class TelaDetalhes(ctk.CTkFrame):
     """Tela de detalhes do produto"""
 

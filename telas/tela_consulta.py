@@ -7,7 +7,6 @@ from tkinter import messagebox
 import banco
 from constantes import *
 
-
 class TelaConsulta(ctk.CTkToplevel):
     """Tela de consulta de produtos"""
 
@@ -21,7 +20,7 @@ class TelaConsulta(ctk.CTkToplevel):
         self.mudar_tela = mudar_tela_callback
         self.produtos = []
         self.filtro_categoria = ""
-        
+
         self.carregar_produtos()
         self._build_ui()
         self.carregar_tabela()
@@ -38,29 +37,29 @@ class TelaConsulta(ctk.CTkToplevel):
                     "categoria": item[2],
                     "preco": item[3],
                     "quantidade": item[4],
-                    "descricao": item[5] if len(item) > 5 else "",
+                    "descricao": item[5] if len(item) > 5 else ""
                 })
         except Exception as e:
             messagebox.showerror("Erro", f"Erro ao carregar produtos: {e}")
 
     def _build_ui(self):
         """Constrói a interface"""
-        
+
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(2, weight=1)
-        
+
         # Cabeçalho
         cabecalho = ctk.CTkFrame(self)
         cabecalho.grid(row=0, column=0, padx=20, pady=10, sticky="ew")
         cabecalho.grid_columnconfigure(0, weight=1)
-        
+
         btn_voltar = ctk.CTkButton(
-            cabecalho, text="⬅️ VOLTAR", 
+            cabecalho, text="⬅️ VOLTAR",
             width=120, command=self._voltar,
             fg_color=COR_VOLTAR
         )
         btn_voltar.grid(row=0, column=0, padx=10, pady=10, sticky="w")
-        
+
         # Título
         titulo = ctk.CTkLabel(
             self, text="🐾 CONSULTAR PRODUTOS 🐾",
@@ -68,48 +67,48 @@ class TelaConsulta(ctk.CTkToplevel):
             text_color=COR_PRIMARIA
         )
         titulo.grid(row=1, column=0, pady=10)
-        
+
         # Card principal
         card = ctk.CTkFrame(self, corner_radius=15)
         card.grid(row=2, column=0, padx=20, pady=10, sticky="nsew")
         card.grid_columnconfigure(0, weight=1)
         card.grid_rowconfigure(1, weight=1)
-        
+
         # Barra de busca
         frame_busca = ctk.CTkFrame(card)
         frame_busca.grid(row=0, column=0, padx=10, pady=10, sticky="ew")
         frame_busca.grid_columnconfigure(1, weight=1)
-        
+
         ctk.CTkLabel(
-            frame_busca, text="🔍 Pesquisar:", 
+            frame_busca, text="🔍 Pesquisar:",
             font=ctk.CTkFont(size=14, weight="bold")
         ).grid(row=0, column=0, padx=10, pady=10)
-        
+
         self.entry_busca = ctk.CTkEntry(
-            frame_busca, width=300, 
+            frame_busca, width=300,
             placeholder_text="Digite ID ou nome..."
         )
         self.entry_busca.grid(row=0, column=1, padx=10, pady=10, sticky="ew")
         self.entry_busca.bind("<Return>", lambda e: self._buscar())
-        
+
         btn_buscar = ctk.CTkButton(
-            frame_busca, text="BUSCAR", 
+            frame_busca, text="BUSCAR",
             width=100, command=self._buscar,
             fg_color=COR_SECUNDARIA
         )
         btn_buscar.grid(row=0, column=2, padx=10, pady=10)
-        
+
         # Filtros
         frame_filtros = ctk.CTkFrame(card)
         frame_filtros.grid(row=1, column=0, padx=10, pady=5, sticky="ew")
         frame_filtros.grid_columnconfigure(0, weight=1)
-        
+
         btn_todos = ctk.CTkButton(
             frame_filtros, text="🥩 Todos",
             width=100, command=lambda: self._filtrar_categoria("")
         )
         btn_todos.grid(row=0, column=0, padx=5, pady=5)
-        
+
         categorias = ["Alimentação", "Higiene", "Saúde", "Brinquedos", "Acessórios", "Serviços"]
         for i, cat in enumerate(categorias, start=1):
             btn = ctk.CTkButton(
@@ -117,29 +116,31 @@ class TelaConsulta(ctk.CTkToplevel):
                 width=100, command=lambda c=cat: self._filtrar_categoria(c)
             )
             btn.grid(row=0, column=i, padx=5, pady=5)
-        
+
         # Tabela (usando CTkScrollableFrame com labels para simular tabela)
         frame_tabela = ctk.CTkScrollableFrame(card)
         frame_tabela.grid(row=2, column=0, padx=10, pady=10, sticky="nsew")
         frame_tabela.grid_columnconfigure(0, weight=1)
-        
+
         # Cabeçalho da tabela
         header_frame = ctk.CTkFrame(frame_tabela)
-        header_frame.pack(fill="x", pady=2)
-        
-        headers = ["ID", "NOME", "CATEGORIA", "PREÇO", "QTD"]
-        for i, header in enumerate(headers):
-            lbl = ctk.CTkLabel(
-                header_frame, text=header, 
-                font=ctk.CTkFont(weight="bold"),
-                width=100 if i == 0 else 150
-            )
-            lbl.pack(side="left", padx=5, expand=True if i > 0 else False)
-        
+        header_frame.pack(fill="x", pady=(0, 5))
+
+        ctk.CTkLabel(header_frame, text="ID", width=60, font=ctk.CTkFont(weight="bold")
+        ).pack(side="left", padx=5)
+        ctk.CTkLabel(header_frame, text="NOME", width=300, font=ctk.CTkFont(weight="bold")
+        ).pack(side="left", padx=5)
+        ctk.CTkLabel(header_frame, text="CATEGORIA", width=180, font=ctk.CTkFont(weight="bold")
+        ).pack(side="left", padx=5)
+        ctk.CTkLabel(header_frame, text="PREÇO", width=120, font=ctk.CTkFont(weight="bold")
+        ).pack(side="left", padx=5)
+        ctk.CTkLabel(header_frame, text="QTD", width=80, font=ctk.CTkFont(weight="bold")
+        ).pack(side="left", padx=5)
+
         # Container para linhas
         self.linhas_container = ctk.CTkFrame(frame_tabela)
         self.linhas_container.pack(fill="both", expand=True)
-        
+
         # Label de status
         self.lbl_status = ctk.CTkLabel(
             self, text="", font=ctk.CTkFont(size=12)
@@ -151,9 +152,9 @@ class TelaConsulta(ctk.CTkToplevel):
         # Limpar linhas existentes
         for widget in self.linhas_container.winfo_children():
             widget.destroy()
-        
+
         dados = produtos if produtos is not None else self.produtos
-        
+
         if not dados:
             lbl_vazio = ctk.CTkLabel(
                 self.linhas_container, text="📦 Nenhum produto encontrado",
@@ -162,37 +163,40 @@ class TelaConsulta(ctk.CTkToplevel):
             lbl_vazio.pack(pady=50)
             self.lbl_status.configure(text="📦 0 produto(s) encontrado(s)")
             return
-        
+
         for produto in dados:
-            linha = ctk.CTkFrame(self.linhas_container)
+            linha = ctk.CTkFrame(self.linhas_container, height=35)
             linha.pack(fill="x", pady=2, padx=5)
-            
-            # Bind de duplo clique
+            linha.pack_propagate(False)
+
+
+
+            # Bind de duplo clique abre detalhes
             def callback(p=produto):
                 self._abrir_detalhes(p)
-            
-            lbl_id = ctk.CTkLabel(linha, text=str(produto["id"]), width=50)
+
+            lbl_id = ctk.CTkLabel(linha, text=str(produto["id"]), width=60)
             lbl_id.pack(side="left", padx=5)
             lbl_id.bind("<Button-1>", lambda e, p=produto: self._abrir_detalhes(p))
-            
-            lbl_nome = ctk.CTkLabel(linha, text=produto["nome"], width=200, anchor="w")
-            lbl_nome.pack(side="left", padx=5, fill="x", expand=True)
+
+            lbl_nome = ctk.CTkLabel(linha, text=produto["nome"], width=300, anchor="w")
+            lbl_nome.pack(side="left", padx=5)
             lbl_nome.bind("<Button-1>", lambda e, p=produto: self._abrir_detalhes(p))
-            
-            lbl_cat = ctk.CTkLabel(linha, text=produto["categoria"], width=120)
+
+            lbl_cat = ctk.CTkLabel(linha, text=produto["categoria"], width=180)
             lbl_cat.pack(side="left", padx=5)
             lbl_cat.bind("<Button-1>", lambda e, p=produto: self._abrir_detalhes(p))
-            
-            lbl_preco = ctk.CTkLabel(linha, text=f"R$ {produto['preco']:.2f}".replace('.', ','), width=100)
+
+            lbl_preco = ctk.CTkLabel(linha, text=f"R$ {produto['preco']:.2f}".replace('.', ','), width=120)
             lbl_preco.pack(side="left", padx=5)
             lbl_preco.bind("<Button-1>", lambda e, p=produto: self._abrir_detalhes(p))
-            
+
             qtd = produto["quantidade"]
             cor = "green" if qtd >= 10 else ("orange" if qtd > 0 else "red")
-            lbl_qtd = ctk.CTkLabel(linha, text=str(qtd), width=60, text_color=cor)
+            lbl_qtd = ctk.CTkLabel(linha, text=str(qtd), width=80, text_color=cor)
             lbl_qtd.pack(side="left", padx=5)
             lbl_qtd.bind("<Button-1>", lambda e, p=produto: self._abrir_detalhes(p))
-        
+
         self.lbl_status.configure(text=f"✅ {len(dados)} produto(s) encontrado(s)", text_color="green")
 
     def _buscar(self):

@@ -1,5 +1,5 @@
 """
-PDV PET SHOP - Sistema de Auto Atendimento
+Tela de Venda - PDV Pet Shop (CustomTkinter)
 """
 
 import customtkinter as ctk
@@ -13,7 +13,7 @@ class App:
         print("Iniciando...")
         
         self.janela = ctk.CTk()
-        self.janela.title("🐾 PDV PET SHOP")
+        self.janela.title("🐾 CENTRAL PET SHOP 🐾")
         self.janela.geometry(f"{LARGURA_JANELA}x{ALTURA_JANELA}")
         
         self.janela.grid_columnconfigure(0, weight=1)

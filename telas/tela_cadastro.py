@@ -7,7 +7,6 @@ from tkinter import messagebox
 import banco
 from constantes import *
 
-
 class TelaCadastro(ctk.CTkToplevel):
     """Tela de cadastro de produtos"""
 

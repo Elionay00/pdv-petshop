@@ -12,8 +12,8 @@ def carregar_config():
     """Carrega as configurações salvas ou cria configuração padrão"""
     
     # Criar pasta dados se não existir
-    if not os.path.exists("../dados"):
-        os.makedirs("../dados")
+    if not os.path.exists("dados"):
+        os.makedirs("dados")
     
     # Se arquivo não existe, criar padrão
     if not os.path.exists(ARQUIVO_CONFIG):
@@ -33,8 +33,8 @@ def salvar_config(config):
     """Salva as configurações em arquivo JSON"""
     try:
         # Criar pasta dados se não existir
-        if not os.path.exists("../dados"):
-            os.makedirs("../dados")
+        if not os.path.exists("dados"):
+            os.makedirs("dados")
         
         with open(ARQUIVO_CONFIG, "w", encoding="utf-8") as f:
             json.dump(config, f, indent=4)

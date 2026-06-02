@@ -15,9 +15,8 @@ class TelaPrincipal(ctk.CTkFrame):
         self.grid_columnconfigure(0, weight=1)
         
         self.titulo = ctk.CTkLabel(
-            self, text="🐾 PDV PET SHOP 🐾",
-            font=FONTE_TITULO, text_color=COR_PRIMARIA
-        )
+            self, text="🐾 CENTRAL PET SHOP 🐾",
+            font=FONTE_TITULO, text_color=COR_PRIMARIA)
         self.titulo.pack(pady=(50, 30))
         
         container = ctk.CTkFrame(self, fg_color="transparent")
@@ -39,29 +38,32 @@ class TelaPrincipal(ctk.CTkFrame):
         )
         self.btn_consultar.pack(pady=10)
 
-        self.btn_detalhes = ctk.CTkButton(
-            container, text="📋 DETALHES",
+        self.btn_vender = ctk.CTkButton(
+            container, text="🛒 VENDER",
             width=BOTAO_LARGO, height=BOTAO_ALTO,
             font=FONTE_BOTAO, fg_color=COR_TERCIARIA,
-            command=self.abrir_detalhes  # <-- CHAMA O MÉTODO CORRETO
+            command=self.abrir_venda
         )
-        self.btn_detalhes.pack(pady=10)
+        self.btn_vender.pack(pady=10)
+
+        frame_final = ctk.CTkFrame(container, fg_color="transparent")
+        frame_final.pack(pady=(15, 30))
 
         self.btn_tema = ctk.CTkButton(
-            container, text="🌙 TEMA",
-            width=BOTAO_LARGO, height=BOTAO_ALTO,
-            font=FONTE_BOTAO, fg_color=COR_VOLTAR,
+            frame_final, text="🌙 TEMA",
+            width=180, height=55,
+            font=("Arial",18,"bold"), fg_color=COR_VOLTAR,
             command=self.alternar_tema
         )
-        self.btn_tema.pack(pady=10)
+        self.btn_tema.pack(side="left",padx=10)
 
         self.btn_sair = ctk.CTkButton(
-            container, text="🚪 SAIR",
-            width=BOTAO_LARGO, height=BOTAO_ALTO,
-            font=FONTE_BOTAO, fg_color=COR_PERIGO,
+            frame_final, text="🚪 SAIR",
+            width=180, height=55,
+            font=("Arial",18,"bold"), fg_color=COR_PERIGO,
             command=self.sair
         )
-        self.btn_sair.pack(pady=(10, 40))
+        self.btn_sair.pack(side="left",padx=10)
         
         self.atualizar_texto_tema()
 
@@ -73,19 +75,9 @@ class TelaPrincipal(ctk.CTkFrame):
         from telas.tela_consulta import TelaConsulta
         self.mudar_tela(TelaConsulta)
 
-    def abrir_detalhes(self):
-        """Abre a tela de detalhes (precisa de um ID de produto)"""
-        # Primeiro, buscar o primeiro produto para mostrar
-        import banco
-        produtos = banco.listar_produtos()
-        if produtos:
-            # Pega o ID do primeiro produto
-            id_produto = produtos[0][0]
-            from telas.tela_detalhes import TelaDetalhes
-            self.mudar_tela(TelaDetalhes, id_produto=id_produto)
-        else:
-            from tkinter import messagebox
-            messagebox.showinfo("Aviso", "Nenhum produto cadastrado. Cadastre um produto primeiro!")
+    def abrir_venda(self):
+        from telas.tela_vender import TelaVender
+        self.mudar_tela(TelaVender)
 
     def alternar_tema(self):
         novo_tema = config.alternar_tema()
